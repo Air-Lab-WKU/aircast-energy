@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Data and downloads · AirCast-Energy · AIR Lab · WKU</title>
+  <meta name="description" content="Download the experimental AirCast-Energy demand forecasts as CSV and JSON, with a column dictionary, licence and citation." />
+  <meta name="theme-color" content="#0A1119" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="css/forecast.css?v=9" />
+  <script src="js/theme-init.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-row">
+    <a class="brand" href="index.html" data-carry aria-label="AirCast-Energy, AIR Lab, home">
+      <img class="brand-wku" src="img/wku-mark.png" alt="" width="28" height="32" />
+      <span class="brand-name"><b>AIR</b><i>Lab</i></span>
+      <span class="brand-rule" aria-hidden="true"></span>
+      <span class="brand-word">
+        <span class="brand-prod">AirCast-Energy</span>
+        <span class="brand-sub">Demand · experimental</span>
+      </span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" data-carry>Forecast</a></li>
+        <li><a href="verification.html">Verification</a></li>
+        <li><a href="methods.html">Methods</a></li>
+        <li><a href="downloads.html" aria-current="page">Data</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a class="ext" href="https://air-lab-wku.github.io/">AIR Lab<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a></li>
+      </ul>
+    </nav>
+    <div class="nav-tools">
+      <button class="icon-btn" id="themeToggle" type="button" aria-pressed="false" aria-label="Light theme">
+        <svg class="ic theme-ic-dark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="ic theme-ic-light" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+      </button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Open menu">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="exp" role="note">
+  <div class="wrap">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 19.5h19L12 3ZM12 10v4.5M12 17.2v.1"/></svg>
+    <p><strong>Experimental research product</strong> – not for operational dispatch decisions.</p>
+  </div>
+</div>
+
+<main id="main">
+  <div class="wrap page-head">
+    <h1>Get the data</h1>
+    <p class="lede">Every number on this site is a plain CSV or JSON file you can download. Use the stable paths below if you want to pull the latest forecast into your own tools.</p>
+  </div>
+
+  <div class="wrap prose">
+    <h2>The latest forecast</h2>
+    <div id="latest"><p class="loading">Loading…</p></div>
+
+    <h2>Stable paths for scripts</h2>
+    <p>These always point at the newest run, live or not. Check <span class="mono">kind</span> in the summary: <span class="mono">live</span> for a real forecast, <span class="mono">replay</span> for a hindcast.</p>
+    <ul class="paths">
+      <li><a class="mono" href="data/issues.json">data/issues.json</a>: list of available runs, newest first</li>
+      <li><a class="mono" href="data/latest/summary.json">data/latest/summary.json</a>: run details and one row per area</li>
+      <li><a class="mono" href="data/latest/risk.json">data/latest/risk.json</a>: chances by area and day, for all three levels</li>
+      <li><span class="mono">data/&lt;issue date&gt;/&lt;AREA&gt;.json</span> and <span class="mono">.csv</span>: one area, every percentile</li>
+      <li><span class="mono">data/&lt;issue date&gt;/forecast_all.csv</span>: every area in one file</li>
+    </ul>
+
+    <h2>Earlier runs and replays</h2>
+    <div id="archive"><p class="loading">Loading…</p></div>
+    <p class="muted-sm">A longer archive will move to a Hugging Face dataset once publishing is approved.</p>
+
+    <h2>What the columns mean</h2>
+    <p>The CSV files have one row per area, quantity and day (or week).</p>
+    <div class="table-scroll">
+      <table class="data dict">
+        <caption class="sr-only">CSV column dictionary</caption>
+        <thead><tr><th scope="col">Column</th><th scope="col">Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>issue</td><td>Date the forecast was issued (YYYY-MM-DD).</td></tr>
+          <tr><td>ba</td><td>Balancing authority code, for example TVA or ERCO.</td></tr>
+          <tr><td>target</td><td><span class="mono">peak</span> (highest hourly demand of the day or week) or <span class="mono">energy</span> (total demand of the day or week).</td></tr>
+          <tr><td>unit</td><td>Lead code, not a physical unit: <span class="mono">d1</span>–<span class="mono">d14</span> are days after the issue date, <span class="mono">w1</span>–<span class="mono">w6</span> are weeks (w1 = d1–d7). Live runs have w1–w2 only.</td></tr>
+          <tr><td>valid_start, valid_end</td><td>First and last date the row covers (same date for days). Per-area files only.</td></tr>
+          <tr><td>value_unit</td><td>Physical unit: MW for peak; MWh for energy (per day for d leads, per week for w leads). Per-area files only.</td></tr>
+          <tr><td>observed</td><td>Actual demand, in replays only. Empty in live runs.</td></tr>
+          <tr><td>lag_obs_missing</td><td>True if recent observed demand was missing when the forecast was made.</td></tr>
+          <tr><td>q05 … q95</td><td>Forecast percentiles in steps of 5: 5% of outcomes are expected below q05, half below q50, 95% below q95.</td></tr>
+          <tr><td>t90, t95, t99</td><td>The area's top-10%, top-5% and top-1% demand levels for that time of year. Peak only.</td></tr>
+          <tr><td>p_gt_t90, p_gt_t95, p_gt_t99</td><td>Forecast chance (0 to 1) that demand exceeds t90, t95 or t99. Peak only.</td></tr>
+          <tr><td>label</td><td>Run description (live runs in <span class="mono">forecast_all.csv</span> only).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Licence</h2>
+    <p>Proposed: <strong>Creative Commons Attribution 4.0 (CC BY 4.0)</strong>. You may share and adapt the forecasts for any purpose with attribution to the AIR Lab. Derived from ECMWF open data (CC BY 4.0) and other sources listed on the <a href="about.html#data-sources">About</a> page. The licence will be confirmed before public release.</p>
+
+    <h2 id="cite">How to cite</h2>
+    <blockquote class="cite">Luitel, S. and Singh, M. (2026). <em>AirCast-Energy: probabilistic electricity-demand forecasts</em> (operational_v1), DSOC AIR Lab, Western Kentucky University. Issue <span id="citeIssue">YYYY-MM-DD</span>. DOI or URL: to be assigned.</blockquote>
+    <p class="muted-sm">Please also state that the forecasts are an experimental research product and name the issue date you used.</p>
+  </div>
+</main>
+
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <span class="brand-name"><b>AIR</b><i>Lab</i></span>
+        <p><strong>AirCast-Energy · Demand</strong>, from the AI Research Laboratory at the Disaster Science Operations Center, Western Kentucky University. Experimental research product, provided without warranty. Not for operational dispatch decisions.</p>
+        <img src="img/wku-light.png" alt="Western Kentucky University" width="360" height="309" loading="lazy" />
+      </div>
+      <div>
+        <h2>This site</h2>
+        <ul><li><a href="index.html">Forecast map</a></li><li><a href="verification.html">Verification</a></li><li><a href="methods.html">Methods and model card</a></li><li><a href="downloads.html">Data and downloads</a></li><li><a href="about.html">About and disclaimer</a></li></ul>
+      </div>
+      <div>
+        <h2>Lab</h2>
+        <ul><li><a href="https://air-lab-wku.github.io/">AIR Lab home</a></li><li><a href="https://www.wku.edu/eeas/">WKU EEAS</a></li><li><a href="mailto:manmeet.singh@wku.edu">manmeet.singh@wku.edu</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-small">
+      <p class="credit">Developed by <a href="https://air-lab-wku.github.io/#team">Somnath Luitel</a> and <a href="https://air-lab-wku.github.io/#team">Dr. Manmeet Singh</a> at the DSOC AIR Lab, Western Kentucky University. Contact: <a href="mailto:manmeet.singh@wku.edu">manmeet.singh@wku.edu</a>.</p>
+      <p>Contains modified ECMWF open data (CC BY 4.0). Demand data: U.S. EIA-930 and FERC Form 714. Reanalysis: Copernicus Climate Change Service ERA5/ERA5T. Details on the <a href="about.html">About</a> page.</p>
+      <p>© <span id="year">2026</span> AIR Lab, Western Kentucky University · Bowling Green, Kentucky.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/common.js?v=6" defer></script>
+<script src="js/downloads.js?v=6" defer></script>
+</body>
+</html>

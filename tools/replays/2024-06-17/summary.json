@@ -1,0 +1,9 @@
+{
+ "issue": "2024-06-17",
+ "package": "operational_v1",
+ "members": 10,
+ "untested_member_count": false,
+ "stack_mode": "refit",
+ "seconds": 60.958660364151,
+ "n_bas": 29
+}

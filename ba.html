@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Balancing authority forecast · AirCast-Energy · AIR Lab · WKU</title>
+  <meta name="description" content="AirCast-Energy: probabilistic daily and weekly peak and energy demand forecast for one U.S. balancing authority. Experimental, not for operational dispatch decisions." />
+  <meta name="theme-color" content="#0A1119" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="css/forecast.css?v=9" />
+  <script src="js/theme-init.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-row">
+    <a class="brand" href="index.html" data-carry aria-label="AirCast-Energy, AIR Lab, home">
+      <img class="brand-wku" src="img/wku-mark.png" alt="" width="28" height="32" />
+      <span class="brand-name"><b>AIR</b><i>Lab</i></span>
+      <span class="brand-rule" aria-hidden="true"></span>
+      <span class="brand-word">
+        <span class="brand-prod">AirCast-Energy</span>
+        <span class="brand-sub">Demand · experimental</span>
+      </span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" data-carry>Forecast</a></li>
+        <li><a href="verification.html">Verification</a></li>
+        <li><a href="methods.html">Methods</a></li>
+        <li><a href="downloads.html">Data</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a class="ext" href="https://air-lab-wku.github.io/">AIR Lab<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a></li>
+      </ul>
+    </nav>
+    <div class="nav-tools">
+      <button class="icon-btn" id="themeToggle" type="button" aria-pressed="false" aria-label="Light theme">
+        <svg class="ic theme-ic-dark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="ic theme-ic-light" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+      </button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Open menu">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="exp" role="note">
+  <div class="wrap">
+    <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 19.5h19L12 3ZM12 10v4.5M12 17.2v.1"/></svg>
+    <p><strong>Experimental research product</strong> – not for operational dispatch decisions.</p>
+  </div>
+</div>
+
+<main id="main">
+  <div class="wrap page-head">
+    <p class="crumbs"><a href="index.html" id="backLink">Back to the map</a></p>
+    <div class="issue-line" id="issueMenu"></div>
+    <div class="ba-head">
+      <div>
+        <h1 id="baTitle">Loading…</h1>
+        <p class="ba-sub" id="baSub"></p>
+      </div>
+      <div class="ba-tools">
+        <div class="select-wrap">
+          <label for="baSel">Switch area</label>
+          <select class="select" id="baSel"><option>…</option></select>
+        </div>
+        <fieldset class="seg" id="targetSeg">
+          <legend>Show</legend>
+          <div class="seg-row">
+            <label><input type="radio" name="target" value="peak" checked /><span>Peak demand</span></label>
+            <label><input type="radio" name="target" value="energy" /><span>Daily energy</span></label>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <p class="ba-lede" id="baLede"></p>
+    <div class="issue-badges" id="badges"></div>
+    <div id="notes" class="issue-box notes-row"></div>
+  </div>
+
+  <div class="wrap ba-grid">
+    <div>
+      <section class="panel" aria-labelledby="fanTitle">
+        <div class="panel-head">
+          <h2 id="fanTitle">Daily peak demand</h2>
+          <div class="cx-tools" id="fanTools"></div>
+        </div>
+        <p class="panel-sub" id="fanSub" hidden></p>
+        <div class="chart-key" id="fanKey"></div>
+        <div class="chart" id="fan" tabindex="0" role="group" aria-labelledby="fanTitle" aria-describedby="fanHint"></div>
+        <p class="cx-note" id="fanNote"></p>
+        <div class="sr-only" id="fanRead" aria-live="polite"></div>
+        <p class="kbd-hint" id="fanHint">Hover or tap the chart to read a day; focus it and use the arrow keys, Home and End to step through the days. The table further down has every value.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="wkTitle">
+        <h2 id="wkTitle">Week by week</h2>
+        <p class="panel-sub" id="wkSub"></p>
+        <div class="chart-key" id="wkKey"></div>
+        <div class="chart" id="weeks" tabindex="0" role="group" aria-labelledby="wkTitle" aria-describedby="wkHint"></div>
+        <div class="sr-only" id="wkRead" aria-live="polite"></div>
+        <p class="kbd-hint" id="wkHint">The box is the 50% range, the whisker the 90% range and the bar the median forecast. Focus the chart and use the arrow keys to step through the weeks.</p>
+      </section>
+
+      <section class="panel" aria-labelledby="tblTitle">
+        <h2 id="tblTitle">All the numbers</h2>
+        <p class="panel-sub" id="tblSub"></p>
+        <div class="table-scroll" id="tbl" tabindex="0" role="region" aria-labelledby="tblTitle"></div>
+      </section>
+    </div>
+
+    <aside>
+      <section class="panel" aria-labelledby="readTitle">
+        <h2 id="readTitle">How to read this</h2>
+        <ul class="howto">
+          <li>The <strong>median forecast</strong> line: half of outcomes fall above it, half below.</li>
+          <li>The <strong>50% range</strong> (darker band) holds the middle half of outcomes; the <strong>90% range</strong> (lighter band) holds nine in ten.</li>
+          <li>The <strong>dashed line</strong> is this area's top-10% demand level for the time of year. Switch it to the top 5% or top 1% above the chart.</li>
+          <li id="howObs" hidden>The <strong>observed</strong> line is what demand actually was. This is a hindcast, so you can check the forecast against it.</li>
+        </ul>
+      </section>
+      <section class="panel" aria-labelledby="factsTitle">
+        <h2 id="factsTitle">About this area</h2>
+        <dl class="facts" id="facts"></dl>
+      </section>
+      <section class="panel" aria-labelledby="dlTitle">
+        <h2 id="dlTitle">Download</h2>
+        <ul class="dl-list" id="dl"></ul>
+        <p class="panel-sub">Column meanings are on the <a href="downloads.html">Data</a> page. Proposed licence: CC BY 4.0.</p>
+      </section>
+    </aside>
+  </div>
+</main>
+
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <span class="brand-name"><b>AIR</b><i>Lab</i></span>
+        <p><strong>AirCast-Energy · Demand</strong>, from the AI Research Laboratory at the Disaster Science Operations Center, Western Kentucky University. Experimental research product, provided without warranty. Not for operational dispatch decisions.</p>
+        <img src="img/wku-light.png" alt="Western Kentucky University" width="360" height="309" loading="lazy" />
+      </div>
+      <div>
+        <h2>This site</h2>
+        <ul><li><a href="index.html">Forecast map</a></li><li><a href="verification.html">Verification</a></li><li><a href="methods.html">Methods and model card</a></li><li><a href="downloads.html">Data and downloads</a></li><li><a href="about.html">About and disclaimer</a></li></ul>
+      </div>
+      <div>
+        <h2>Lab</h2>
+        <ul><li><a href="https://air-lab-wku.github.io/">AIR Lab home</a></li><li><a href="https://www.wku.edu/eeas/">WKU EEAS</a></li><li><a href="mailto:manmeet.singh@wku.edu">manmeet.singh@wku.edu</a></li></ul>
+      </div>
+    </div>
+    <div class="foot-small">
+      <p class="credit">Developed by <a href="https://air-lab-wku.github.io/#team">Somnath Luitel</a> and <a href="https://air-lab-wku.github.io/#team">Dr. Manmeet Singh</a> at the DSOC AIR Lab, Western Kentucky University. Contact: <a href="mailto:manmeet.singh@wku.edu">manmeet.singh@wku.edu</a>.</p>
+      <p>Contains modified ECMWF open data (CC BY 4.0). Demand data: U.S. EIA-930 and FERC Form 714. Reanalysis: Copernicus Climate Change Service ERA5/ERA5T. Details on the <a href="about.html">About</a> page.</p>
+      <p>© <span id="year">2026</span> AIR Lab, Western Kentucky University · Bowling Green, Kentucky.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/common.js?v=6" defer></script>
+<script src="js/charts.js?v=6" defer></script>
+<script src="js/ba.js?v=7" defer></script>
+</body>
+</html>
